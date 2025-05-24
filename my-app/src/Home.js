@@ -28,7 +28,10 @@ function Home() {
     const updatedBayList = bayList.filter(
       (_, index) => index !== indexToComplete
     );
-    const updatedCompletedList = [...completedList, completedItem];
+    const updatedCompletedList = [
+      ...completedList,
+      { bayName: completedItem.bayName },
+    ];
 
     setBayList(updatedBayList);
     setCompletedList(updatedCompletedList);
@@ -105,7 +108,7 @@ function Home() {
         <ol className="completed-list">
           {completedList.map((entry, index) => (
             <li key={index}>
-              {entry.bayName} - {entry.serialNumber}
+              {entry.bayName}
               <div className="button-group">
                 <button
                   className="delete-btn"
