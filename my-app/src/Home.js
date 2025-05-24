@@ -40,6 +40,20 @@ function Home() {
     );
   };
 
+  const handleDeleteActive = (indexToDelete) => {
+    const updatedList = bayList.filter((_, index) => index !== indexToDelete);
+    setBayList(updatedList);
+    sessionStorage.setItem("bayList", JSON.stringify(updatedList));
+  };
+
+  const handleDeleteCompleted = (indexToDelete) => {
+    const updatedList = completedList.filter(
+      (_, index) => index !== indexToDelete
+    );
+    setCompletedList(updatedList);
+    sessionStorage.setItem("completedList", JSON.stringify(updatedList));
+  };
+
   return (
     <div className="container">
       <h2>Bay Manager</h2>
@@ -69,6 +83,12 @@ function Home() {
               >
                 Complete
               </button>
+              <button
+                className="delete-btn"
+                onClick={() => handleDeleteActive(index)}
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ol>
@@ -82,6 +102,12 @@ function Home() {
           {completedList.map((entry, index) => (
             <li key={index}>
               {entry.bayName} - {entry.serialNumber}
+              <button
+                className="delete-btn"
+                onClick={() => handleDeleteCompleted(index)}
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ol>
