@@ -1,0 +1,77 @@
+/* Home.css */
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+input {
+  padding: 10px;
+  margin: 10px 10px 10px 0;
+  width: 45%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #125aa6;
+}
+
+h3 {
+  margin-top: 30px;
+  color: #555;
+}
+
+ol {
+  padding-left: 20px;
+  color: #444;
+}
+
+li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.complete-btn {
+  margin-left: 20px;
+  padding: 6px 14px;
+  background-color: #4caf50; /* Green */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.complete-btn:hover {
+  background-color: #388e3c; /* Darker green on hover */
+}
