@@ -57,57 +57,63 @@ function Home() {
   return (
     <div className="container">
       <h2>Bay Manager</h2>
-      <input
-        placeholder="Enter Bay Name"
-        value={bayName}
-        onChange={(e) => setBayName(e.target.value)}
-      />
-      <input
-        placeholder="Enter Serial Number"
-        value={serialNumber}
-        onChange={(e) => setSerialNumber(e.target.value)}
-      />
-      <button onClick={handleAdd}>Add Entry</button>
+      <div className="form-group">
+        <input
+          placeholder="Ingrese el número de Bay"
+          value={bayName}
+          onChange={(e) => setBayName(e.target.value)}
+        />
+        <input
+          placeholder="Ingrese el número de Serie"
+          value={serialNumber}
+          onChange={(e) => setSerialNumber(e.target.value)}
+        />
+        <button onClick={handleAdd}>Agregar Unidad</button>
+      </div>
 
-      <h3>Active Entries</h3>
+      <h3>Unidades Desmontadas</h3>
       {bayList.length === 0 ? (
-        <p>No active entries.</p>
+        <p>No hay unidades desmontadas.</p>
       ) : (
-        <ol>
+        <ol className="active-list">
           {bayList.map((entry, index) => (
             <li key={index}>
               {entry.bayName} - {entry.serialNumber}
-              <button
-                className="complete-btn"
-                onClick={() => handleComplete(index)}
-              >
-                Complete
-              </button>
-              <button
-                className="delete-btn"
-                onClick={() => handleDeleteActive(index)}
-              >
-                Delete
-              </button>
+              <div className="button-group">
+                <button
+                  className="complete-btn"
+                  onClick={() => handleComplete(index)}
+                >
+                  Completar
+                </button>
+                <button
+                  className="delete-btn"
+                  onClick={() => handleDeleteActive(index)}
+                >
+                  Eliminar
+                </button>
+              </div>
             </li>
           ))}
         </ol>
       )}
 
-      <h3>Completed Entries</h3>
+      <h3>Nuevas Unidades Montadas</h3>
       {completedList.length === 0 ? (
-        <p>No completed entries yet.</p>
+        <p>No hay unidades montadas.</p>
       ) : (
         <ol className="completed-list">
           {completedList.map((entry, index) => (
             <li key={index}>
               {entry.bayName} - {entry.serialNumber}
-              <button
-                className="delete-btn"
-                onClick={() => handleDeleteCompleted(index)}
-              >
-                Delete
-              </button>
+              <div className="button-group">
+                <button
+                  className="delete-btn"
+                  onClick={() => handleDeleteCompleted(index)}
+                >
+                  Eliminar
+                </button>
+              </div>
             </li>
           ))}
         </ol>

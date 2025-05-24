@@ -23,18 +23,16 @@ h2 {
 
 .form-group {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 10px;
   margin-bottom: 20px;
 }
 
 input {
   padding: 10px;
-  width: calc(50% - 10px);
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 16px;
-  flex: 1 1 100%;
 }
 
 button {
@@ -62,13 +60,31 @@ ol {
   color: #444;
 }
 
+ol.active-list,
+ol.completed-list {
+  list-style-type: decimal;
+  margin-top: 10px;
+}
+
+ol > li::marker {
+  font-weight: bold;
+  color: #1976d2;
+}
+
 li {
   margin-bottom: 12px;
   line-height: 1.6;
+  display: list-item;
+  list-style-position: inside;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
 }
 
 .complete-btn {
-  margin-left: 10px;
   padding: 6px 14px;
   background-color: #4caf50;
   color: white;
@@ -84,7 +100,6 @@ li {
 }
 
 .delete-btn {
-  margin-left: 10px;
   padding: 6px 14px;
   background-color: #d32f2f;
   color: white;
@@ -104,7 +119,7 @@ li {
   font-style: italic;
 }
 
-/* 📱 Responsive Design for Mobile */
+/* 📱 Responsive Design */
 @media (max-width: 600px) {
   .container {
     margin: 20px;
@@ -124,15 +139,9 @@ li {
     width: 100%;
   }
 
-  .complete-btn,
-  .delete-btn {
-    margin-left: 0;
-    margin-top: 10px;
-    width: 100%;
-  }
-
-  li {
-    display: flex;
+  .button-group {
     flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
   }
 }
