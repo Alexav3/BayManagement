@@ -5,12 +5,12 @@ function Home() {
   const [bayName, setBayName] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
   const [bayList, setBayList] = useState(() => {
-    const saved = sessionStorage.getItem("bayList");
+    const saved = localStorage.getItem("bayList");
     return saved ? JSON.parse(saved) : [];
   });
 
   const [completedList, setCompletedList] = useState(() => {
-    const saved = sessionStorage.getItem("completedList");
+    const saved = localStorage.getItem("completedList");
     return saved ? JSON.parse(saved) : [];
   });
 
@@ -23,7 +23,7 @@ function Home() {
     const newEntry = { bayName, serialNumber };
     const updatedList = [...bayList, newEntry];
     setBayList(updatedList);
-    sessionStorage.setItem("bayList", JSON.stringify(updatedList));
+    localStorage.setItem("bayList", JSON.stringify(updatedList));
     setBayName("");
     setSerialNumber("");
   };
@@ -40,23 +40,20 @@ function Home() {
     ];
     setBayList(updatedBayList);
     setCompletedList(updatedCompletedList);
-    sessionStorage.setItem("bayList", JSON.stringify(updatedBayList));
-    sessionStorage.setItem(
-      "completedList",
-      JSON.stringify(updatedCompletedList)
-    );
+    localStorage.setItem("bayList", JSON.stringify(updatedBayList));
+    localStorage.setItem("completedList", JSON.stringify(updatedCompletedList));
   };
 
   const handleDeleteActive = (index) => {
     const updatedList = bayList.filter((_, i) => i !== index);
     setBayList(updatedList);
-    sessionStorage.setItem("bayList", JSON.stringify(updatedList));
+    localStorage.setItem("bayList", JSON.stringify(updatedList));
   };
 
   const handleDeleteCompleted = (index) => {
     const updatedList = completedList.filter((_, i) => i !== index);
     setCompletedList(updatedList);
-    sessionStorage.setItem("completedList", JSON.stringify(updatedList));
+    localStorage.setItem("completedList", JSON.stringify(updatedList));
   };
 
   const handleEditActive = (index) => {
@@ -80,7 +77,7 @@ function Home() {
       serialNumber: editSerialNumber,
     };
     setBayList(updated);
-    sessionStorage.setItem("bayList", JSON.stringify(updated));
+    localStorage.setItem("bayList", JSON.stringify(updated));
     setEditActiveIndex(null);
     setEditBayName("");
     setEditSerialNumber("");
@@ -93,10 +90,17 @@ function Home() {
       serialNumber: editSerialNumber,
     };
     setCompletedList(updated);
-    sessionStorage.setItem("completedList", JSON.stringify(updated));
+    localStorage.setItem("completedList", JSON.stringify(updated));
     setEditCompletedIndex(null);
     setEditBayName("");
     setEditSerialNumber("");
+  };
+
+  const handleClearAll = () => {
+    localStorage.removeItem("bayList");
+    localStorage.removeItem("completedList");
+    setBayList([]);
+    setCompletedList([]);
   };
 
   return (
@@ -217,6 +221,12 @@ function Home() {
           ))}
         </ol>
       )}
+
+      <div className="clear-button-wrapper">
+        <button className="clear-btn" onClick={handleClearAll}>
+          Borrar Todas las Unidades
+        </button>
+      </div>
     </div>
   );
 }
