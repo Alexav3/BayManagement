@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Home.css";
 
 function Home() {
@@ -14,6 +14,11 @@ function Home() {
     return saved ? JSON.parse(saved) : [];
   });
 
+  const [editActiveIndex, setEditActiveIndex] = useState(null);
+  const [editCompletedIndex, setEditCompletedIndex] = useState(null);
+  const [editBayName, setEditBayName] = useState("");
+  const [editSerialNumber, setEditSerialNumber] = useState("");
+
   const handleAdd = () => {
     const newEntry = { bayName, serialNumber };
     const updatedList = [...bayList, newEntry];
@@ -23,19 +28,18 @@ function Home() {
     setSerialNumber("");
   };
 
-  const handleComplete = (indexToComplete) => {
-    const completedItem = bayList[indexToComplete];
-    const updatedBayList = bayList.filter(
-      (_, index) => index !== indexToComplete
-    );
+  const handleComplete = (index) => {
+    const completedItem = bayList[index];
+    const updatedBayList = bayList.filter((_, i) => i !== index);
     const updatedCompletedList = [
       ...completedList,
-      { bayName: completedItem.bayName },
+      {
+        bayName: completedItem.bayName,
+        serialNumber: completedItem.serialNumber,
+      },
     ];
-
     setBayList(updatedBayList);
     setCompletedList(updatedCompletedList);
-
     sessionStorage.setItem("bayList", JSON.stringify(updatedBayList));
     sessionStorage.setItem(
       "completedList",
@@ -43,18 +47,56 @@ function Home() {
     );
   };
 
-  const handleDeleteActive = (indexToDelete) => {
-    const updatedList = bayList.filter((_, index) => index !== indexToDelete);
+  const handleDeleteActive = (index) => {
+    const updatedList = bayList.filter((_, i) => i !== index);
     setBayList(updatedList);
     sessionStorage.setItem("bayList", JSON.stringify(updatedList));
   };
 
-  const handleDeleteCompleted = (indexToDelete) => {
-    const updatedList = completedList.filter(
-      (_, index) => index !== indexToDelete
-    );
+  const handleDeleteCompleted = (index) => {
+    const updatedList = completedList.filter((_, i) => i !== index);
     setCompletedList(updatedList);
     sessionStorage.setItem("completedList", JSON.stringify(updatedList));
+  };
+
+  const handleEditActive = (index) => {
+    setEditActiveIndex(index);
+    setEditCompletedIndex(null);
+    setEditBayName(bayList[index].bayName);
+    setEditSerialNumber(bayList[index].serialNumber);
+  };
+
+  const handleEditCompleted = (index) => {
+    setEditCompletedIndex(index);
+    setEditActiveIndex(null);
+    setEditBayName(completedList[index].bayName);
+    setEditSerialNumber(completedList[index].serialNumber);
+  };
+
+  const handleSaveActiveEdit = () => {
+    const updated = [...bayList];
+    updated[editActiveIndex] = {
+      bayName: editBayName,
+      serialNumber: editSerialNumber,
+    };
+    setBayList(updated);
+    sessionStorage.setItem("bayList", JSON.stringify(updated));
+    setEditActiveIndex(null);
+    setEditBayName("");
+    setEditSerialNumber("");
+  };
+
+  const handleSaveCompletedEdit = () => {
+    const updated = [...completedList];
+    updated[editCompletedIndex] = {
+      bayName: editBayName,
+      serialNumber: editSerialNumber,
+    };
+    setCompletedList(updated);
+    sessionStorage.setItem("completedList", JSON.stringify(updated));
+    setEditCompletedIndex(null);
+    setEditBayName("");
+    setEditSerialNumber("");
   };
 
   return (
@@ -81,21 +123,48 @@ function Home() {
         <ol className="active-list">
           {bayList.map((entry, index) => (
             <li key={index}>
-              {entry.bayName} - {entry.serialNumber}
-              <div className="button-group">
-                <button
-                  className="complete-btn"
-                  onClick={() => handleComplete(index)}
-                >
-                  Completar
-                </button>
-                <button
-                  className="delete-btn"
-                  onClick={() => handleDeleteActive(index)}
-                >
-                  Eliminar
-                </button>
-              </div>
+              {editActiveIndex === index ? (
+                <div className="edit-group">
+                  <input
+                    value={editBayName}
+                    onChange={(e) => setEditBayName(e.target.value)}
+                    placeholder="Bay Name"
+                  />
+                  <input
+                    value={editSerialNumber}
+                    onChange={(e) => setEditSerialNumber(e.target.value)}
+                    placeholder="Serial Number"
+                  />
+                  <button onClick={handleSaveActiveEdit}>Guardar</button>
+                  <button onClick={() => setEditActiveIndex(null)}>
+                    Cancelar
+                  </button>
+                </div>
+              ) : (
+                <>
+                  {entry.bayName} - {entry.serialNumber}
+                  <div className="button-group">
+                    <button
+                      className="complete-btn"
+                      onClick={() => handleComplete(index)}
+                    >
+                      Completar
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDeleteActive(index)}
+                    >
+                      Eliminar
+                    </button>
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEditActive(index)}
+                    >
+                      Editar
+                    </button>
+                  </div>
+                </>
+              )}
             </li>
           ))}
         </ol>
@@ -108,15 +177,42 @@ function Home() {
         <ol className="completed-list">
           {completedList.map((entry, index) => (
             <li key={index}>
-              {entry.bayName}
-              <div className="button-group">
-                <button
-                  className="delete-btn"
-                  onClick={() => handleDeleteCompleted(index)}
-                >
-                  Eliminar
-                </button>
-              </div>
+              {editCompletedIndex === index ? (
+                <div className="edit-group">
+                  <input
+                    value={editBayName}
+                    onChange={(e) => setEditBayName(e.target.value)}
+                    placeholder="Bay Name"
+                  />
+                  <input
+                    value={editSerialNumber}
+                    onChange={(e) => setEditSerialNumber(e.target.value)}
+                    placeholder="Serial Number"
+                  />
+                  <button onClick={handleSaveCompletedEdit}>Guardar</button>
+                  <button onClick={() => setEditCompletedIndex(null)}>
+                    Cancelar
+                  </button>
+                </div>
+              ) : (
+                <>
+                  {entry.bayName} - {entry.serialNumber}
+                  <div className="button-group">
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEditCompleted(index)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDeleteCompleted(index)}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </>
+              )}
             </li>
           ))}
         </ol>
