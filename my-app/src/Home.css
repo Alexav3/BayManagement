@@ -53,18 +53,16 @@ h3 {
   color: #555;
 }
 
-ol {
-  padding-left: 20px;
-  color: #444;
-}
-
 ol.active-list,
 ol.completed-list {
   list-style-type: decimal;
+  padding-left: 20px;
   margin-top: 10px;
+  color: #444;
 }
 
-ol > li::marker {
+ol.active-list li::marker,
+ol.completed-list li::marker {
   font-weight: bold;
   color: #1976d2;
 }
@@ -72,6 +70,9 @@ ol > li::marker {
 li {
   margin-bottom: 12px;
   line-height: 1.6;
+}
+
+.list-item-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -162,7 +163,7 @@ li {
   font-style: italic;
 }
 
-/* 📱 Responsive Design */
+/* Responsive Design */
 @media (max-width: 600px) {
   .container {
     margin: 20px;

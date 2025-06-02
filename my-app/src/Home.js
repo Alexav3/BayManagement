@@ -31,13 +31,7 @@ function Home() {
   const handleComplete = (index) => {
     const completedItem = bayList[index];
     const updatedBayList = bayList.filter((_, i) => i !== index);
-    const updatedCompletedList = [
-      ...completedList,
-      {
-        bayName: completedItem.bayName,
-        serialNumber: completedItem.serialNumber,
-      },
-    ];
+    const updatedCompletedList = [...completedList, completedItem];
     setBayList(updatedBayList);
     setCompletedList(updatedCompletedList);
     localStorage.setItem("bayList", JSON.stringify(updatedBayList));
@@ -108,115 +102,119 @@ function Home() {
       <h2>Bay Manager</h2>
       <div className="form-group">
         <input
-          placeholder="Ingrese el número de Bay"
+          placeholder="Enter Bay Number"
           value={bayName}
           onChange={(e) => setBayName(e.target.value)}
         />
         <input
-          placeholder="Ingrese el número de Serie"
+          placeholder="Enter Serial Number"
           value={serialNumber}
           onChange={(e) => setSerialNumber(e.target.value)}
         />
-        <button onClick={handleAdd}>Agregar Unidad</button>
+        <button onClick={handleAdd}>Add Unit</button>
       </div>
 
-      <h3>Unidades Desmontadas</h3>
+      <h3>Dismounted Units</h3>
       {bayList.length === 0 ? (
-        <p>No hay unidades desmontadas.</p>
+        <p>No dismounted units.</p>
       ) : (
         <ol className="active-list">
           {bayList.map((entry, index) => (
             <li key={index}>
-              {editActiveIndex === index ? (
-                <div className="edit-group">
-                  <input
-                    value={editBayName}
-                    onChange={(e) => setEditBayName(e.target.value)}
-                    placeholder="Bay Name"
-                  />
-                  <input
-                    value={editSerialNumber}
-                    onChange={(e) => setEditSerialNumber(e.target.value)}
-                    placeholder="Serial Number"
-                  />
-                  <button onClick={handleSaveActiveEdit}>Guardar</button>
-                  <button onClick={() => setEditActiveIndex(null)}>
-                    Cancelar
-                  </button>
-                </div>
-              ) : (
-                <>
-                  {entry.bayName} - {entry.serialNumber}
-                  <div className="button-group">
-                    <button
-                      className="complete-btn"
-                      onClick={() => handleComplete(index)}
-                    >
-                      Completar
-                    </button>
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDeleteActive(index)}
-                    >
-                      Eliminar
-                    </button>
-                    <button
-                      className="edit-btn"
-                      onClick={() => handleEditActive(index)}
-                    >
-                      Editar
+              <div className="list-item-content">
+                {editActiveIndex === index ? (
+                  <div className="edit-group">
+                    <input
+                      value={editBayName}
+                      onChange={(e) => setEditBayName(e.target.value)}
+                      placeholder="Bay Name"
+                    />
+                    <input
+                      value={editSerialNumber}
+                      onChange={(e) => setEditSerialNumber(e.target.value)}
+                      placeholder="Serial Number"
+                    />
+                    <button onClick={handleSaveActiveEdit}>Save</button>
+                    <button onClick={() => setEditActiveIndex(null)}>
+                      Cancel
                     </button>
                   </div>
-                </>
-              )}
+                ) : (
+                  <>
+                    {entry.bayName} - {entry.serialNumber}
+                    <div className="button-group">
+                      <button
+                        className="complete-btn"
+                        onClick={() => handleComplete(index)}
+                      >
+                        Complete
+                      </button>
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDeleteActive(index)}
+                      >
+                        Delete
+                      </button>
+                      <button
+                        className="edit-btn"
+                        onClick={() => handleEditActive(index)}
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
             </li>
           ))}
         </ol>
       )}
 
-      <h3>Nuevas Unidades Montadas</h3>
+      <h3>Newly Mounted Units</h3>
       {completedList.length === 0 ? (
-        <p>No hay unidades montadas.</p>
+        <p>No mounted units.</p>
       ) : (
         <ol className="completed-list">
           {completedList.map((entry, index) => (
             <li key={index}>
-              {editCompletedIndex === index ? (
-                <div className="edit-group">
-                  <input
-                    value={editBayName}
-                    onChange={(e) => setEditBayName(e.target.value)}
-                    placeholder="Bay Name"
-                  />
-                  <input
-                    value={editSerialNumber}
-                    onChange={(e) => setEditSerialNumber(e.target.value)}
-                    placeholder="Serial Number"
-                  />
-                  <button onClick={handleSaveCompletedEdit}>Guardar</button>
-                  <button onClick={() => setEditCompletedIndex(null)}>
-                    Cancelar
-                  </button>
-                </div>
-              ) : (
-                <>
-                  {entry.bayName} - {entry.serialNumber}
-                  <div className="button-group">
-                    <button
-                      className="edit-btn"
-                      onClick={() => handleEditCompleted(index)}
-                    >
-                      Editar
-                    </button>
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDeleteCompleted(index)}
-                    >
-                      Eliminar
+              <div className="list-item-content">
+                {editCompletedIndex === index ? (
+                  <div className="edit-group">
+                    <input
+                      value={editBayName}
+                      onChange={(e) => setEditBayName(e.target.value)}
+                      placeholder="Bay Name"
+                    />
+                    <input
+                      value={editSerialNumber}
+                      onChange={(e) => setEditSerialNumber(e.target.value)}
+                      placeholder="Serial Number"
+                    />
+                    <button onClick={handleSaveCompletedEdit}>Save</button>
+                    <button onClick={() => setEditCompletedIndex(null)}>
+                      Cancel
                     </button>
                   </div>
-                </>
-              )}
+                ) : (
+                  <>
+                    {entry.bayName} - {entry.serialNumber}
+                    <div className="button-group">
+                      <button
+                        className="edit-btn"
+                        onClick={() => handleEditCompleted(index)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDeleteCompleted(index)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
             </li>
           ))}
         </ol>
@@ -224,7 +222,7 @@ function Home() {
 
       <div className="clear-button-wrapper">
         <button className="clear-btn" onClick={handleClearAll}>
-          Borrar Todas las Unidades
+          Clear All Units
         </button>
       </div>
     </div>
