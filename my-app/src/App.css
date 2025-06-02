@@ -1,38 +1,35 @@
-.App {
-  text-align: center;
+/* Make the entire app fill the screen height */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Flex layout: header + content + footer */
+.app-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  min-height: 100vh;
 }
 
-.App-link {
-  color: #61dafb;
+/* Main content expands to fill space between header and footer */
+.main-content {
+  flex: 1;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Optional: remove default list style (you can override in component CSS if needed) */
+ul,
+ol {
+  padding-left: 20px;
+  margin: 0;
+}
+
+/* Reset buttons and inputs if desired (optional) */
+button,
+input {
+  font-family: inherit;
 }
