@@ -12,7 +12,7 @@ The **Bay Management Application** is a web-based system designed to help users 
 
 ## Technologies Used
 
-- **Frontend:** REACT, CSS, NodeJS.
+- **Frontend:** REACT, CSS.
 - **Version Control:** Git & GitHub
 
 ## Getting Started
