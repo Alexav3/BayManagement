@@ -12,9 +12,7 @@ The **Bay Management Application** is a web-based system designed to help users 
 
 ## Technologies Used
 
-- **Frontend:** HTML, CSS, JavaScript (Vanilla JS)
-- **Backend (optional if applicable):** Node.js, Express
-- **Database (if used):** MySQL or similar
+- **Frontend:** REACT, CSS, NodeJS.
 - **Version Control:** Git & GitHub
 
 ## Getting Started
@@ -24,7 +22,7 @@ git clone https://github.com/Alexav3/BayManagement.git
 2. Navigate into the project directory:
 cd BayManagement/my-app
 
-3.Open `index.html` in your browser to use the app.
+3. Open `index.html` in your browser to use the app.
 
 > **Note:** If you're using a backend and database, ensure the server is running and connected before use.
 
