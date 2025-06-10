@@ -24,14 +24,6 @@ cd BayManagement/my-app
 
 3. Open `index.html` in your browser to use the app.
 
-> **Note:** If you're using a backend and database, ensure the server is running and connected before use.
-
-## Future Enhancements
-
-- Implement user authentication for secure access.
-- Add search and filter capabilities.
-- Connect to a backend database for persistent storage.
-- Improve responsive design for mobile and tablet support.
 
 ## License
 
