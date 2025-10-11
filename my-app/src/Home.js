@@ -2,6 +2,14 @@ import React, { useState } from "react";
 import "./Home.css";
 
 function Home() {
+  const skuOptions = [
+    "7620045-28572",
+    "7621446-30256",
+    "7622544-27938",
+    "7621588-32382",
+    "7606906-29636",
+  ];
+
   const [bayName, setBayName] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
   const [sku, setSku] = useState("");
@@ -112,6 +120,7 @@ function Home() {
   return (
     <div className="container">
       <h2>Bay Manager</h2>
+
       <div className="form-group">
         <input
           placeholder="Enter Bay Number"
@@ -123,11 +132,30 @@ function Home() {
           value={serialNumber}
           onChange={(e) => setSerialNumber(e.target.value)}
         />
+
+        {/* Manual SKU input */}
         <input
           placeholder="Enter SKU"
           value={sku}
           onChange={(e) => setSku(e.target.value)}
         />
+
+        {/* Quick-select SKU dropdown */}
+        <select
+          value=""
+          onChange={(e) => setSku(e.target.value)}
+          aria-label="Quick select SKU"
+        >
+          <option value="" disabled>
+            — Quick select SKU —
+          </option>
+          {skuOptions.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
+
         <button onClick={handleAdd}>Add Unit</button>
       </div>
 
@@ -156,6 +184,21 @@ function Home() {
                       onChange={(e) => setEditSku(e.target.value)}
                       placeholder="SKU"
                     />
+                    <select
+                      value=""
+                      onChange={(e) => setEditSku(e.target.value)}
+                      aria-label="Quick select SKU"
+                    >
+                      <option value="" disabled>
+                        — Quick select SKU —
+                      </option>
+                      {skuOptions.map((opt) => (
+                        <option key={opt} value={opt}>
+                          {opt}
+                        </option>
+                      ))}
+                    </select>
+
                     <button onClick={handleSaveActiveEdit}>Save</button>
                     <button onClick={() => setEditActiveIndex(null)}>
                       Cancel
@@ -164,7 +207,7 @@ function Home() {
                 ) : (
                   <>
                     {entry.bayName} — {entry.serialNumber}
-                    {` — ${entry.sku ?? ""}`}
+                    {entry.sku ? ` — ${entry.sku}` : ""}
                     <div className="button-group">
                       <button
                         className="complete-btn"
@@ -218,6 +261,21 @@ function Home() {
                       onChange={(e) => setEditSku(e.target.value)}
                       placeholder="SKU"
                     />
+                    <select
+                      value=""
+                      onChange={(e) => setEditSku(e.target.value)}
+                      aria-label="Quick select SKU"
+                    >
+                      <option value="" disabled>
+                        — Quick select SKU —
+                      </option>
+                      {skuOptions.map((opt) => (
+                        <option key={opt} value={opt}>
+                          {opt}
+                        </option>
+                      ))}
+                    </select>
+
                     <button onClick={handleSaveCompletedEdit}>Save</button>
                     <button onClick={() => setEditCompletedIndex(null)}>
                       Cancel
@@ -226,7 +284,7 @@ function Home() {
                 ) : (
                   <>
                     {entry.bayName} — {entry.serialNumber}
-                    {` — ${entry.sku ?? ""}`}
+                    {entry.sku ? ` — ${entry.sku}` : ""}
                     <div className="button-group">
                       <button
                         className="edit-btn"
