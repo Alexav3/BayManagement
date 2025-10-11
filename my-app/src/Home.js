@@ -4,6 +4,8 @@ import "./Home.css";
 function Home() {
   const [bayName, setBayName] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
+  const [sku, setSku] = useState("");
+
   const [bayList, setBayList] = useState(() => {
     const saved = localStorage.getItem("bayList");
     return saved ? JSON.parse(saved) : [];
@@ -18,14 +20,16 @@ function Home() {
   const [editCompletedIndex, setEditCompletedIndex] = useState(null);
   const [editBayName, setEditBayName] = useState("");
   const [editSerialNumber, setEditSerialNumber] = useState("");
+  const [editSku, setEditSku] = useState("");
 
   const handleAdd = () => {
-    const newEntry = { bayName, serialNumber };
+    const newEntry = { bayName, serialNumber, sku };
     const updatedList = [...bayList, newEntry];
     setBayList(updatedList);
     localStorage.setItem("bayList", JSON.stringify(updatedList));
     setBayName("");
     setSerialNumber("");
+    setSku("");
   };
 
   const handleComplete = (index) => {
@@ -51,17 +55,21 @@ function Home() {
   };
 
   const handleEditActive = (index) => {
+    const item = bayList[index];
     setEditActiveIndex(index);
     setEditCompletedIndex(null);
-    setEditBayName(bayList[index].bayName);
-    setEditSerialNumber(bayList[index].serialNumber);
+    setEditBayName(item.bayName || "");
+    setEditSerialNumber(item.serialNumber || "");
+    setEditSku(item.sku || "");
   };
 
   const handleEditCompleted = (index) => {
+    const item = completedList[index];
     setEditCompletedIndex(index);
     setEditActiveIndex(null);
-    setEditBayName(completedList[index].bayName);
-    setEditSerialNumber(completedList[index].serialNumber);
+    setEditBayName(item.bayName || "");
+    setEditSerialNumber(item.serialNumber || "");
+    setEditSku(item.sku || "");
   };
 
   const handleSaveActiveEdit = () => {
@@ -69,12 +77,14 @@ function Home() {
     updated[editActiveIndex] = {
       bayName: editBayName,
       serialNumber: editSerialNumber,
+      sku: editSku,
     };
     setBayList(updated);
     localStorage.setItem("bayList", JSON.stringify(updated));
     setEditActiveIndex(null);
     setEditBayName("");
     setEditSerialNumber("");
+    setEditSku("");
   };
 
   const handleSaveCompletedEdit = () => {
@@ -82,12 +92,14 @@ function Home() {
     updated[editCompletedIndex] = {
       bayName: editBayName,
       serialNumber: editSerialNumber,
+      sku: editSku,
     };
     setCompletedList(updated);
     localStorage.setItem("completedList", JSON.stringify(updated));
     setEditCompletedIndex(null);
     setEditBayName("");
     setEditSerialNumber("");
+    setEditSku("");
   };
 
   const handleClearAll = () => {
@@ -110,6 +122,11 @@ function Home() {
           placeholder="Enter Serial Number"
           value={serialNumber}
           onChange={(e) => setSerialNumber(e.target.value)}
+        />
+        <input
+          placeholder="Enter SKU"
+          value={sku}
+          onChange={(e) => setSku(e.target.value)}
         />
         <button onClick={handleAdd}>Add Unit</button>
       </div>
@@ -134,6 +151,11 @@ function Home() {
                       onChange={(e) => setEditSerialNumber(e.target.value)}
                       placeholder="Serial Number"
                     />
+                    <input
+                      value={editSku}
+                      onChange={(e) => setEditSku(e.target.value)}
+                      placeholder="SKU"
+                    />
                     <button onClick={handleSaveActiveEdit}>Save</button>
                     <button onClick={() => setEditActiveIndex(null)}>
                       Cancel
@@ -141,7 +163,8 @@ function Home() {
                   </div>
                 ) : (
                   <>
-                    {entry.bayName} - {entry.serialNumber}
+                    {entry.bayName} — {entry.serialNumber}
+                    {` — ${entry.sku ?? ""}`}
                     <div className="button-group">
                       <button
                         className="complete-btn"
@@ -190,6 +213,11 @@ function Home() {
                       onChange={(e) => setEditSerialNumber(e.target.value)}
                       placeholder="Serial Number"
                     />
+                    <input
+                      value={editSku}
+                      onChange={(e) => setEditSku(e.target.value)}
+                      placeholder="SKU"
+                    />
                     <button onClick={handleSaveCompletedEdit}>Save</button>
                     <button onClick={() => setEditCompletedIndex(null)}>
                       Cancel
@@ -197,7 +225,8 @@ function Home() {
                   </div>
                 ) : (
                   <>
-                    {entry.bayName} - {entry.serialNumber}
+                    {entry.bayName} — {entry.serialNumber}
+                    {` — ${entry.sku ?? ""}`}
                     <div className="button-group">
                       <button
                         className="edit-btn"
