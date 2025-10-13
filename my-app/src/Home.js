@@ -139,7 +139,8 @@ function Home() {
     if (completedList.length === 0) return;
 
     // Title for the CSV
-    const title = "L11 Packout Report";
+    const title =
+      "L11 Daily Test Report: Racks that passed testing and were moved to packout";
 
     // Column headers (numbered, exclude Bay)
     const headers = ["#", "Serial Number", "SKU"];
