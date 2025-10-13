@@ -128,3 +128,25 @@ button:active {
 .clear-btn:hover {
   background-color: #5c636a;
 }
+.export-wrapper {
+  margin-top: 10px;
+}
+
+.export-btn {
+  padding: 12px 18px;
+  background-color: #20c997; /* teal */
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.25s, transform 0.1s;
+}
+
+.export-btn:hover {
+  background-color: #17b38a;
+}
+
+.export-btn:active {
+  transform: scale(0.98);
+}

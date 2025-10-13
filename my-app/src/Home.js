@@ -125,6 +125,64 @@ function Home() {
     setCompletedList([]);
   };
 
+  // ---------- CSV EXPORT ----------
+  const escapeCSV = (value) => {
+    const str = value == null ? "" : String(value);
+    // If field contains a comma, quote or newline, wrap in quotes and escape quotes
+    if (/[",\n\r]/.test(str)) {
+      return `"${str.replace(/"/g, '""')}"`;
+    }
+    return str;
+  };
+
+  const exportCompletedToCSV = () => {
+    if (completedList.length === 0) return;
+
+    // Title for the CSV
+    const title = "L11 Packout Report";
+
+    // Column headers (numbered, exclude Bay)
+    const headers = ["#", "Serial Number", "SKU"];
+
+    // Add some padding to make Excel display columns wider
+    const pad = "   "; // three spaces of padding
+
+    // Generate rows with numbering starting at 1
+    const rows = completedList.map((row, i) => [
+      i + 1,
+      escapeCSV(row.serialNumber + pad),
+      escapeCSV(row.sku + pad),
+    ]);
+
+    // Combine title, header, and rows
+    const csvLines = [
+      title,
+      headers.map((h) => escapeCSV(h + pad)).join(","),
+      ...rows.map((r) => r.join(",")),
+    ];
+
+    // Add BOM so Excel opens UTF-8 correctly
+    const csvContent = "\uFEFF" + csvLines.join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const date = new Date();
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+
+    // Create and trigger download
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `L11-Packout-Report-${yyyy}-${mm}-${dd}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+  // --------------------------------
+
   return (
     <div className="container">
       <h2>Bay Manager</h2>
@@ -141,7 +199,7 @@ function Home() {
           onChange={(e) => setSerialNumber(e.target.value)}
         />
 
-        {/* Dropdown now above SKU input */}
+        {/* Dropdown above SKU input */}
         <select
           value=""
           onChange={(e) => setSku(e.target.value)}
@@ -249,73 +307,82 @@ function Home() {
       {completedList.length === 0 ? (
         <p>No mounted units.</p>
       ) : (
-        <ol className="completed-list">
-          {completedList.map((entry, index) => (
-            <li key={index}>
-              <div className="list-item-content">
-                {editCompletedIndex === index ? (
-                  <div className="edit-group">
-                    <input
-                      value={editBayName}
-                      onChange={(e) => setEditBayName(e.target.value)}
-                      placeholder="Bay Name"
-                    />
-                    <input
-                      value={editSerialNumber}
-                      onChange={(e) => setEditSerialNumber(e.target.value)}
-                      placeholder="Serial Number"
-                    />
+        <>
+          <ol className="completed-list">
+            {completedList.map((entry, index) => (
+              <li key={index}>
+                <div className="list-item-content">
+                  {editCompletedIndex === index ? (
+                    <div className="edit-group">
+                      <input
+                        value={editBayName}
+                        onChange={(e) => setEditBayName(e.target.value)}
+                        placeholder="Bay Name"
+                      />
+                      <input
+                        value={editSerialNumber}
+                        onChange={(e) => setEditSerialNumber(e.target.value)}
+                        placeholder="Serial Number"
+                      />
 
-                    <select
-                      value=""
-                      onChange={(e) => setEditSku(e.target.value)}
-                      aria-label="Quick select SKU"
-                    >
-                      <option value="" disabled>
-                        — Quick select SKU —
-                      </option>
-                      {skuOptions.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
+                      <select
+                        value=""
+                        onChange={(e) => setEditSku(e.target.value)}
+                        aria-label="Quick select SKU"
+                      >
+                        <option value="" disabled>
+                          — Quick select SKU —
                         </option>
-                      ))}
-                    </select>
+                        {skuOptions.map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
+                      </select>
 
-                    <input
-                      value={editSku}
-                      onChange={(e) => setEditSku(e.target.value)}
-                      placeholder="SKU"
-                    />
+                      <input
+                        value={editSku}
+                        onChange={(e) => setEditSku(e.target.value)}
+                        placeholder="SKU"
+                      />
 
-                    <button onClick={handleSaveCompletedEdit}>Save</button>
-                    <button onClick={() => setEditCompletedIndex(null)}>
-                      Cancel
-                    </button>
-                  </div>
-                ) : (
-                  <>
-                    {entry.bayName} — {entry.serialNumber}
-                    {entry.sku ? ` — ${entry.sku}` : ""}
-                    <div className="button-group">
-                      <button
-                        className="edit-btn"
-                        onClick={() => handleEditCompleted(index)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="delete-btn"
-                        onClick={() => handleDeleteCompleted(index)}
-                      >
-                        Delete
+                      <button onClick={handleSaveCompletedEdit}>Save</button>
+                      <button onClick={() => setEditCompletedIndex(null)}>
+                        Cancel
                       </button>
                     </div>
-                  </>
-                )}
-              </div>
-            </li>
-          ))}
-        </ol>
+                  ) : (
+                    <>
+                      {entry.bayName} — {entry.serialNumber}
+                      {entry.sku ? ` — ${entry.sku}` : ""}
+                      <div className="button-group">
+                        <button
+                          className="edit-btn"
+                          onClick={() => handleEditCompleted(index)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="delete-btn"
+                          onClick={() => handleDeleteCompleted(index)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          {/* CSV export button right after the list */}
+          <div className="export-wrapper">
+            <button className="export-btn" onClick={exportCompletedToCSV}>
+              Download Completed as CSV
+            </button>
+          </div>
+        </>
       )}
 
       <div className="clear-button-wrapper">
