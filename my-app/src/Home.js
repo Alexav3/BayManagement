@@ -5,9 +5,17 @@ function Home() {
   const skuOptions = [
     "7620045-28572",
     "7621446-30256",
-    "7622544-27938",
+    "7621526-32068",
+    "7621526-33089",
     "7621588-32382",
+    "7621595-30938",
+    "7605844-29705",
+    "7605855-29653",
+    "7605056-31961",
+    "7606607-24864",
     "7606906-29636",
+    "7627588-30049",
+    "7623642-28482",
   ];
 
   const [bayName, setBayName] = useState("");
@@ -133,14 +141,7 @@ function Home() {
           onChange={(e) => setSerialNumber(e.target.value)}
         />
 
-        {/* Manual SKU input */}
-        <input
-          placeholder="Enter SKU"
-          value={sku}
-          onChange={(e) => setSku(e.target.value)}
-        />
-
-        {/* Quick-select SKU dropdown */}
+        {/* Dropdown now above SKU input */}
         <select
           value=""
           onChange={(e) => setSku(e.target.value)}
@@ -155,6 +156,12 @@ function Home() {
             </option>
           ))}
         </select>
+
+        <input
+          placeholder="Enter SKU"
+          value={sku}
+          onChange={(e) => setSku(e.target.value)}
+        />
 
         <button onClick={handleAdd}>Add Unit</button>
       </div>
@@ -179,11 +186,7 @@ function Home() {
                       onChange={(e) => setEditSerialNumber(e.target.value)}
                       placeholder="Serial Number"
                     />
-                    <input
-                      value={editSku}
-                      onChange={(e) => setEditSku(e.target.value)}
-                      placeholder="SKU"
-                    />
+
                     <select
                       value=""
                       onChange={(e) => setEditSku(e.target.value)}
@@ -198,6 +201,12 @@ function Home() {
                         </option>
                       ))}
                     </select>
+
+                    <input
+                      value={editSku}
+                      onChange={(e) => setEditSku(e.target.value)}
+                      placeholder="SKU"
+                    />
 
                     <button onClick={handleSaveActiveEdit}>Save</button>
                     <button onClick={() => setEditActiveIndex(null)}>
@@ -256,11 +265,7 @@ function Home() {
                       onChange={(e) => setEditSerialNumber(e.target.value)}
                       placeholder="Serial Number"
                     />
-                    <input
-                      value={editSku}
-                      onChange={(e) => setEditSku(e.target.value)}
-                      placeholder="SKU"
-                    />
+
                     <select
                       value=""
                       onChange={(e) => setEditSku(e.target.value)}
@@ -275,6 +280,12 @@ function Home() {
                         </option>
                       ))}
                     </select>
+
+                    <input
+                      value={editSku}
+                      onChange={(e) => setEditSku(e.target.value)}
+                      placeholder="SKU"
+                    />
 
                     <button onClick={handleSaveCompletedEdit}>Save</button>
                     <button onClick={() => setEditCompletedIndex(null)}>

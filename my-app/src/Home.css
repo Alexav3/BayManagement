@@ -1,198 +1,130 @@
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4f6f8;
-  margin: 0;
-  padding: 0;
-}
-
 .container {
   max-width: 600px;
   margin: 40px auto;
-  background-color: #ffffff;
+  background: #fff;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
+  font-size: 1.8rem;
   margin-bottom: 20px;
+  color: #222;
+}
+
+h3 {
+  margin-top: 25px;
   color: #333;
+  font-size: 1.3rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 25px;
 }
 
-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
+input,
+select {
+  font-size: 1rem;
+  padding: 12px 14px;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Focus style for better user experience */
+input:focus,
+select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* Dropdown improvements */
+select {
+  background-color: #ffffff;
+  font-weight: 500;
+  cursor: pointer;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #007bff 50%),
+    linear-gradient(135deg, #007bff 50%, transparent 50%);
+  background-position: calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
 }
 
 button {
-  padding: 10px 20px;
-  background-color: #1976d2;
+  padding: 12px 18px;
+  background-color: #0d6efd;
   color: white;
+  font-size: 1rem;
   border: none;
-  border-radius: 6px;
-  font-size: 16px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.25s, transform 0.1s;
 }
 
 button:hover {
-  background-color: #125aa6;
+  background-color: #0b5ed7;
 }
 
-h3 {
-  margin-top: 30px;
-  color: #555;
-}
-
-ol.active-list,
-ol.completed-list {
-  list-style-type: decimal;
-  padding-left: 20px;
-  margin-top: 10px;
-  color: #444;
-}
-
-ol.active-list li::marker,
-ol.completed-list li::marker {
-  font-weight: bold;
-  color: #1976d2;
-}
-
-li {
-  margin-bottom: 12px;
-  line-height: 1.6;
+button:active {
+  transform: scale(0.97);
 }
 
 .list-item-content {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #ddd;
+  flex-direction: column;
+  margin: 10px 0;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fafafa;
 }
 
 .button-group {
   display: flex;
-  gap: 6px;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.button-group button {
-  padding: 4px 8px;
-  font-size: 12px;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-}
-
-/* Edit mode */
-.edit-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-  padding: 8px;
-  background-color: #f9f9f9;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  width: 100%;
-}
-
-.edit-group input {
-  padding: 6px 10px;
-  font-size: 14px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  flex: 1 1 120px;
-  min-width: 100px;
-}
-
-.edit-group button {
-  padding: 6px 12px;
-  font-size: 13px;
-  border-radius: 4px;
-  border: none;
-  background-color: #1976d2;
-  color: white;
-  cursor: pointer;
-}
-
-.edit-group button:hover {
-  background-color: #125aa6;
-}
-
-/* Individual Button Colors */
 .complete-btn {
-  background-color: #4caf50;
-  color: white;
+  background-color: #198754;
 }
 
 .complete-btn:hover {
-  background-color: #388e3c;
+  background-color: #157347;
 }
 
 .delete-btn {
-  background-color: #d32f2f;
-  color: white;
+  background-color: #dc3545;
 }
 
 .delete-btn:hover {
-  background-color: #b71c1c;
+  background-color: #bb2d3b;
 }
 
 .edit-btn {
-  background-color: #007bff;
-  color: white;
+  background-color: #ffc107;
+  color: #000;
 }
 
 .edit-btn:hover {
-  background-color: #0056b3;
+  background-color: #e0a800;
 }
 
-.completed-list li {
-  color: #444;
-  font-style: italic;
+.clear-button-wrapper {
+  margin-top: 20px;
 }
 
-/* Responsive Design */
-@media (max-width: 600px) {
-  .container {
-    margin: 20px;
-    padding: 20px;
-  }
+.clear-btn {
+  background-color: #6c757d;
+}
 
-  .form-group {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  input {
-    width: 100%;
-    font-size: 15px;
-  }
-
-  button {
-    width: 100%;
-    font-size: 15px;
-  }
-
-  .button-group {
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 6px;
-  }
-
-  .button-group button {
-    font-size: 12px;
-    padding: 4px 8px;
-  }
+.clear-btn:hover {
+  background-color: #5c636a;
 }
