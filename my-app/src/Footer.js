@@ -4,7 +4,7 @@ import "./Footer.css";
 function Footer() {
   return (
     <footer className="footer">
-      <p>© Alex Systems. All rights reserved.</p>
+      <p>Created by Alejandro Avila for © Alex Systems. All rights reserved.</p>
     </footer>
   );
 }
