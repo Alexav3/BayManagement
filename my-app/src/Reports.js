@@ -86,7 +86,7 @@ function Reports() {
         <div className="topbar">
           <h2>Reports</h2>
           <a className="btn btn-primary" href="/" rel="noopener noreferrer">
-            Back to Bay Manager
+            Back to Home
           </a>
         </div>
 
