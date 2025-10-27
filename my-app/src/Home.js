@@ -321,7 +321,7 @@ function Home() {
         </ol>
       )}
 
-      <h3>Newly Mounted Units</h3>
+      <h3>Completed Dismounted Units</h3>
       {completedList.length === 0 ? (
         <p>No mounted units.</p>
       ) : (
