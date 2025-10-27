@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Home.css";
 
 function Home() {
@@ -195,14 +196,14 @@ function Home() {
   return (
     <div className="container">
       <h2>Bay Manager</h2>
-      <a
+      <Link
         className="reports-link"
-        href="/reports"
+        to="/reports"
         target="_blank"
         rel="noopener noreferrer"
       >
         Create Report
-      </a>
+      </Link>
 
       <div className="form-group">
         <input
