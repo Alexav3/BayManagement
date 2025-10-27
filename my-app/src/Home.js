@@ -242,7 +242,7 @@ function Home() {
         <button onClick={handleAdd}>Add Unit</button>
       </div>
 
-      <h3>Dismounted Units</h3>
+      <h3>Dismounted Units.</h3>
       {bayList.length === 0 ? (
         <p>No dismounted units.</p>
       ) : (
@@ -321,7 +321,7 @@ function Home() {
         </ol>
       )}
 
-      <h3>Completed Dismounted Units</h3>
+      <h3>Completed Dismounted Units.</h3>
       {completedList.length === 0 ? (
         <p>No mounted units.</p>
       ) : (
