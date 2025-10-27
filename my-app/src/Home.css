@@ -150,3 +150,35 @@ button:active {
 .export-btn:active {
   transform: scale(0.98);
 }
+
+.reports-link {
+  display: inline-block;
+  background-color: #007bff; /* same blue */
+  color: #fff !important;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.reports-link:hover {
+  background-color: #0069d9;
+  transform: translateY(-2px);
+}
+
+.reports-link:active {
+  transform: translateY(0px);
+  background-color: #005fcc;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}

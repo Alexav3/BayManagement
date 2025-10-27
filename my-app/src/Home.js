@@ -148,7 +148,7 @@ function Home() {
     if (completedList.length === 0) return;
 
     // Title for the CSV
-    const title = "L11 Daily Test Report";
+    const title = "L11 Daily Test Report: Units sent to Packout";
 
     // Column headers (numbered, exclude Bay)
     const headers = ["#", "Serial Number", "SKU"];
@@ -195,6 +195,14 @@ function Home() {
   return (
     <div className="container">
       <h2>Bay Manager</h2>
+      <a
+        className="reports-link"
+        href="/reports"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Create Report
+      </a>
 
       <div className="form-group">
         <input
