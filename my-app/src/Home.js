@@ -141,9 +141,9 @@ function Home() {
   };
 
   // ---------- CSV EXPORT ----------
+  // ---------- CSV helpers ----------
   const escapeCSV = (value) => {
     const str = value == null ? "" : String(value);
-    // If field contains a comma, quote or newline, wrap in quotes and escape quotes
     if (/[",\n\r]/.test(str)) {
       return `"${str.replace(/"/g, '""')}"`;
     }
@@ -153,30 +153,28 @@ function Home() {
   const exportCompletedToCSV = () => {
     if (completedList.length === 0) return;
 
-    // Title for the CSV
-    const title = "L11 Daily Test Report: Units sent to Packout";
+    // FAKE BOLD + CENTERED TITLE
+    const mainTitle = "============= L11 ORACLE DAILY REPORT =============";
+    const subTitle =
+      "------------------- UNITS SENT TO PACKOUT -------------------";
 
-    // Column headers (numbered, exclude Bay)
     const headers = ["#", "Serial Number", "SKU"];
+    const pad = "   ";
 
-    // Add some padding to make Excel display columns wider
-    const pad = "   "; // three spaces of padding
-
-    // Generate rows with numbering starting at 1
     const rows = completedList.map((row, i) => [
       i + 1,
       escapeCSV(row.serialNumber + pad),
       escapeCSV(row.sku + pad),
     ]);
 
-    // Combine title, header, and rows
     const csvLines = [
-      title,
+      mainTitle,
+      subTitle,
+      "",
       headers.map((h) => escapeCSV(h + pad)).join(","),
       ...rows.map((r) => r.join(",")),
     ];
 
-    // Add BOM so Excel opens UTF-8 correctly
     const csvContent = "\uFEFF" + csvLines.join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -187,7 +185,6 @@ function Home() {
     const mm = String(date.getMonth() + 1).padStart(2, "0");
     const dd = String(date.getDate()).padStart(2, "0");
 
-    // Create and trigger download
     const link = document.createElement("a");
     link.href = url;
     link.download = `L11-Packout-Report-${yyyy}-${mm}-${dd}.csv`;
