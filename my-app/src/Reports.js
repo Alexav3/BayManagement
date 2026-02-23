@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import "./Reports.css";
 
 function Reports() {
-  // ---- Manual New Units state (Operator + Serial) ----
   const [manualUnits, setManualUnits] = useState(() => {
     const saved = localStorage.getItem("manualNewUnits");
     return saved ? JSON.parse(saved) : [];
   });
+
   const [operator, setOperator] = useState("");
   const [serial, setSerial] = useState("");
+
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editOperator, setEditOperator] = useState("");
+  const [editSerial, setEditSerial] = useState("");
 
   useEffect(() => {
     localStorage.setItem("manualNewUnits", JSON.stringify(manualUnits));
@@ -29,7 +33,29 @@ function Reports() {
 
   const clearManualUnits = () => setManualUnits([]);
 
-  // ---------------- CSV helpers ----------------
+  const startEdit = (idx) => {
+    setEditingIndex(idx);
+    setEditOperator(manualUnits[idx].operator);
+    setEditSerial(manualUnits[idx].serial);
+  };
+
+  const saveEdit = (idx) => {
+    if (!editOperator.trim() || !editSerial.trim()) return;
+    const updated = [...manualUnits];
+    updated[idx] = {
+      operator: editOperator.trim(),
+      serial: editSerial.trim(),
+    };
+    setManualUnits(updated);
+    cancelEdit();
+  };
+
+  const cancelEdit = () => {
+    setEditingIndex(null);
+    setEditOperator("");
+    setEditSerial("");
+  };
+
   const escapeCSV = (value) => {
     const str = value == null ? "" : String(value);
     if (/[",\n\r]/.test(str)) return `"${str.replace(/"/g, '""')}"`;
@@ -90,17 +116,13 @@ function Reports() {
           </a>
         </div>
 
-        {/* -------- New Units Report ONLY -------- */}
         <section className="section">
           <h3>New Units report</h3>
           <p className="muted">
             Create <em>L11 Daily Test Report: New Units Testing</em>. Enter
             <strong> Operator</strong> and <strong>Serial Number</strong> below.
-            The export includes a counter (<strong>#</strong>), Operator, and
-            Serial Number.
           </p>
 
-          {/* Manual entry form */}
           <div className="manual-form">
             <input
               value={operator}
@@ -119,7 +141,6 @@ function Reports() {
             </button>
           </div>
 
-          {/* Manual table */}
           {manualUnits.length === 0 ? (
             <p className="hint">No manual entries yet.</p>
           ) : (
@@ -131,22 +152,69 @@ function Reports() {
                       <th style={{ width: 60 }}>#</th>
                       <th>Operator</th>
                       <th>Serial Number</th>
-                      <th style={{ width: 1 }}></th>
+                      <th style={{ width: 180 }}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {manualUnits.map((row, i) => (
                       <tr key={`${row.serial}-${i}`}>
                         <td>{i + 1}</td>
-                        <td>{row.operator}</td>
-                        <td>{row.serial}</td>
                         <td>
-                          <button
-                            className="btn btn-ghost-danger"
-                            onClick={() => deleteManualUnit(i)}
-                          >
-                            Delete
-                          </button>
+                          {editingIndex === i ? (
+                            <input
+                              value={editOperator}
+                              onChange={(e) =>
+                                setEditOperator(e.target.value)
+                              }
+                            />
+                          ) : (
+                            row.operator
+                          )}
+                        </td>
+                        <td>
+                          {editingIndex === i ? (
+                            <input
+                              value={editSerial}
+                              onChange={(e) =>
+                                setEditSerial(e.target.value)
+                              }
+                            />
+                          ) : (
+                            row.serial
+                          )}
+                        </td>
+                        <td className="actions-cell">
+                          {editingIndex === i ? (
+                            <>
+                              <button
+                                className="btn btn-primary"
+                                onClick={() => saveEdit(i)}
+                              >
+                                Save
+                              </button>
+                              <button
+                                className="btn btn-secondary"
+                                onClick={cancelEdit}
+                              >
+                                Cancel
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <button
+                                className="btn btn-ghost"
+                                onClick={() => startEdit(i)}
+                              >
+                                Edit
+                              </button>
+                              <button
+                                className="btn btn-ghost-danger"
+                                onClick={() => deleteManualUnit(i)}
+                              >
+                                Delete
+                              </button>
+                            </>
+                          )}
                         </td>
                       </tr>
                     ))}

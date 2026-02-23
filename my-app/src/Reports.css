@@ -42,10 +42,12 @@
   margin: 8px 0 14px;
 }
 
+/* ---- Manual form ---- */
 .manual-form {
   display: grid;
-  grid-template-columns: 1fr 1fr auto;
+  grid-template-columns: repeat(2, 1fr) auto;
   gap: 10px;
+  align-items: center;
   margin-bottom: 12px;
 }
 
@@ -55,7 +57,6 @@
   border-radius: 10px;
   padding: 0 12px;
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
   background: #fff;
 }
 
@@ -64,6 +65,7 @@
   box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
 }
 
+/* ---- Table ---- */
 .table-wrapper {
   overflow-x: auto;
   border: 1px solid var(--border);
@@ -88,29 +90,29 @@
   font-weight: 600;
 }
 
-/* Buttons */
+/* Editing inputs */
+.simple-table td input {
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ---- Buttons ---- */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  height: 42px;
-  padding: 0 16px;
-  border-radius: 10px;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.15s, background-color 0.15s, border-color 0.15s,
-    color 0.15s;
+  transition: 0.15s;
   text-decoration: none;
-  user-select: none;
-}
-
-.btn:active {
-  transform: translateY(0);
-}
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
 }
 
 .btn-primary {
@@ -118,9 +120,9 @@
   color: #fff;
   border: none;
 }
+
 .btn-primary:hover {
   background: var(--primary-hover);
-  transform: translateY(-1px);
 }
 
 .btn-secondary {
@@ -128,36 +130,58 @@
   color: #111827;
   border: 1px solid var(--border);
 }
-.btn-secondary:hover {
-  background: #eef1f6;
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}
+
+.btn-ghost:hover {
+  background: var(--primary);
+  color: #fff;
 }
 
 .btn-ghost-danger {
   background: transparent;
   color: #c0392b;
   border: 1px solid transparent;
-  height: 34px;
-  padding: 0 10px;
-  border-radius: 8px;
 }
+
 .btn-ghost-danger:hover {
   background: #fff0f0;
   border-color: #ffd6d6;
 }
 
-/* Row with action buttons */
+/* 🔥 FIXED ACTION CELL */
+.actions-cell {
+  white-space: nowrap;
+  width: 1%;
+}
+
+.actions-cell button {
+  margin-right: 6px;
+  font-size: 0.85rem;
+}
+
+.actions-cell button:last-child {
+  margin-right: 0;
+}
+
+/* Bottom row buttons */
 .row-actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
   margin-top: 12px;
+  align-items: center;
 }
 
-/* Small screen tweaks */
 @media (max-width: 640px) {
   .manual-form {
     grid-template-columns: 1fr;
   }
+
   .btn {
     width: 100%;
   }
