@@ -47,13 +47,7 @@ function Reports() {
   const downloadManualNewUnitsCSV = () => {
     if (manualUnits.length === 0) return;
 
-    // FAKE BOLD + CENTERED TITLE
-    const mainTitle =
-      "============= L11 ORACLE DAILY REPORT =============";
-
-    const subTitle =
-      "------------------- NEW UNITS TESTING -------------------";
-
+    const title = "L11 Daily Test Report: New Units Testing";
     const headers = ["#", "Operator", "Serial Number"];
     const pad = "   ";
 
@@ -64,22 +58,18 @@ function Reports() {
     ]);
 
     const csvLines = [
-      mainTitle,
-      subTitle,
-      "",
+      title,
       headers.map((h) => escapeCSV(h + pad)).join(","),
       ...rows.map((r) => r.join(",")),
     ];
 
     const csvContent = "\uFEFF" + csvLines.join("\n");
-    const blob = new Blob([csvContent], {
-      type: "text/csv;charset=utf-8;",
-    });
-
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
+
     const link = document.createElement("a");
     link.href = url;
-    link.download = `L11-Oracle-Daily-Report-${todayStamp()}.csv`;
+    link.download = `L11-New-Units-Report-${todayStamp()}.csv`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
