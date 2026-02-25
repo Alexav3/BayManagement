@@ -7,7 +7,13 @@ function Reports() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [operator, setOperator] = useState("");
+  // Dropdown options
+  const operatorOptions = ["ALEJANDRO", "JOHNNY", "KANTANGA", "RICHARD"];
+
+  // Operator selection + optional custom operator
+  const [operatorSelect, setOperatorSelect] = useState("");
+  const [operatorCustom, setOperatorCustom] = useState("");
+
   const [serial, setSerial] = useState("");
 
   const [editingIndex, setEditingIndex] = useState(null);
@@ -18,12 +24,23 @@ function Reports() {
     localStorage.setItem("manualNewUnits", JSON.stringify(manualUnits));
   }, [manualUnits]);
 
+  const getOperatorValue = () => {
+    if (operatorSelect === "OTHER") return operatorCustom.trim();
+    return operatorSelect.trim();
+  };
+
+  const resetOperator = () => {
+    setOperatorSelect("");
+    setOperatorCustom("");
+  };
+
   const addManualUnit = () => {
-    const op = operator.trim();
+    const op = getOperatorValue();
     const sn = serial.trim();
     if (!op || !sn) return;
+
     setManualUnits((prev) => [...prev, { operator: op, serial: sn }]);
-    setOperator("");
+    resetOperator();
     setSerial("");
   };
 
@@ -124,12 +141,33 @@ function Reports() {
           </p>
 
           <div className="manual-form">
-            <input
-              value={operator}
-              onChange={(e) => setOperator(e.target.value)}
-              onKeyDown={onKeyDown}
-              placeholder="Operator"
-            />
+            {/* Operator dropdown */}
+            <select
+              value={operatorSelect}
+              onChange={(e) => {
+                setOperatorSelect(e.target.value);
+                if (e.target.value !== "OTHER") setOperatorCustom("");
+              }}
+            >
+              <option value="">Select Operator</option>
+              {operatorOptions.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+              <option value="OTHER">Other...</option>
+            </select>
+
+            {/* Custom operator if Other... */}
+            {operatorSelect === "OTHER" && (
+              <input
+                value={operatorCustom}
+                onChange={(e) => setOperatorCustom(e.target.value)}
+                onKeyDown={onKeyDown}
+                placeholder="Type operator name"
+              />
+            )}
+
             <input
               value={serial}
               onChange={(e) => setSerial(e.target.value)}
@@ -163,9 +201,7 @@ function Reports() {
                           {editingIndex === i ? (
                             <input
                               value={editOperator}
-                              onChange={(e) =>
-                                setEditOperator(e.target.value)
-                              }
+                              onChange={(e) => setEditOperator(e.target.value)}
                             />
                           ) : (
                             row.operator
@@ -175,9 +211,7 @@ function Reports() {
                           {editingIndex === i ? (
                             <input
                               value={editSerial}
-                              onChange={(e) =>
-                                setEditSerial(e.target.value)
-                              }
+                              onChange={(e) => setEditSerial(e.target.value)}
                             />
                           ) : (
                             row.serial
