@@ -7,22 +7,31 @@ function Reports() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Dropdown options
   const operatorOptions = ["ALEJANDRO", "JOHNNY", "KANTANGA", "RICHARD"];
 
-  // Operator selection + optional custom operator
   const [operatorSelect, setOperatorSelect] = useState("");
   const [operatorCustom, setOperatorCustom] = useState("");
-
   const [serial, setSerial] = useState("");
 
   const [editingIndex, setEditingIndex] = useState(null);
   const [editOperator, setEditOperator] = useState("");
   const [editSerial, setEditSerial] = useState("");
 
+  // ✅ custom confirm modal
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
+
   useEffect(() => {
     localStorage.setItem("manualNewUnits", JSON.stringify(manualUnits));
   }, [manualUnits]);
+
+  // Close modal on ESC
+  useEffect(() => {
+    const onEsc = (e) => {
+      if (e.key === "Escape") setShowClearConfirm(false);
+    };
+    if (showClearConfirm) window.addEventListener("keydown", onEsc);
+    return () => window.removeEventListener("keydown", onEsc);
+  }, [showClearConfirm]);
 
   const getOperatorValue = () => {
     if (operatorSelect === "OTHER") return operatorCustom.trim();
@@ -48,7 +57,20 @@ function Reports() {
     setManualUnits((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  const clearManualUnits = () => setManualUnits([]);
+  // ✅ Open custom modal instead of window.confirm
+  const requestClearAll = () => {
+    if (manualUnits.length === 0) return;
+    setShowClearConfirm(true);
+  };
+
+  const confirmClearAll = () => {
+    setManualUnits([]);
+    setShowClearConfirm(false);
+  };
+
+  const cancelClearAll = () => {
+    setShowClearConfirm(false);
+  };
 
   const startEdit = (idx) => {
     setEditingIndex(idx);
@@ -58,11 +80,13 @@ function Reports() {
 
   const saveEdit = (idx) => {
     if (!editOperator.trim() || !editSerial.trim()) return;
+
     const updated = [...manualUnits];
     updated[idx] = {
       operator: editOperator.trim(),
       serial: editSerial.trim(),
     };
+
     setManualUnits(updated);
     cancelEdit();
   };
@@ -141,7 +165,6 @@ function Reports() {
           </p>
 
           <div className="manual-form">
-            {/* Operator dropdown */}
             <select
               value={operatorSelect}
               onChange={(e) => {
@@ -158,7 +181,6 @@ function Reports() {
               <option value="OTHER">Other...</option>
             </select>
 
-            {/* Custom operator if Other... */}
             {operatorSelect === "OTHER" && (
               <input
                 value={operatorCustom}
@@ -174,6 +196,7 @@ function Reports() {
               onKeyDown={onKeyDown}
               placeholder="Serial Number"
             />
+
             <button className="btn btn-primary" onClick={addManualUnit}>
               Add
             </button>
@@ -257,12 +280,10 @@ function Reports() {
               </div>
 
               <div className="row-actions">
-                <button
-                  className="btn btn-secondary"
-                  onClick={clearManualUnits}
-                >
+                <button className="btn btn-secondary" onClick={requestClearAll}>
                   Clear all
                 </button>
+
                 <button
                   className="btn btn-primary"
                   onClick={downloadManualNewUnitsCSV}
@@ -274,6 +295,35 @@ function Reports() {
           )}
         </section>
       </div>
+
+      {/* ✅ Custom Confirm Modal */}
+      {showClearConfirm && (
+        <div
+          className="modal-backdrop"
+          onMouseDown={(e) => {
+            // click outside closes modal
+            if (e.target.classList.contains("modal-backdrop")) cancelClearAll();
+          }}
+        >
+          <div className="modal-card" role="dialog" aria-modal="true">
+            <div className="modal-title">Clear all units?</div>
+            <div className="modal-text">
+              This will remove <strong>{manualUnits.length}</strong>{" "}
+              {manualUnits.length === 1 ? "unit" : "units"} from the table. This
+              cannot be undone.
+            </div>
+
+            <div className="modal-actions">
+              <button className="btn btn-secondary" onClick={cancelClearAll}>
+                Cancel
+              </button>
+              <button className="btn btn-danger" onClick={confirmClearAll}>
+                Yes, clear all
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

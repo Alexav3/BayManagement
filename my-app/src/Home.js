@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Home.css";
 
@@ -31,6 +31,9 @@ function Home() {
     "7627557-31849",
     "7605844-33774",
     "7624457-32867",
+    "7605855-24475",
+    "7625150-29268",
+    "7622744-31757",
   ];
 
   const [bayName, setBayName] = useState("");
@@ -52,6 +55,18 @@ function Home() {
   const [editBayName, setEditBayName] = useState("");
   const [editSerialNumber, setEditSerialNumber] = useState("");
   const [editSku, setEditSku] = useState("");
+
+  // ✅ custom confirm modal (same style as Reports)
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
+
+  // Close modal on ESC
+  useEffect(() => {
+    const onEsc = (e) => {
+      if (e.key === "Escape") setShowClearConfirm(false);
+    };
+    if (showClearConfirm) window.addEventListener("keydown", onEsc);
+    return () => window.removeEventListener("keydown", onEsc);
+  }, [showClearConfirm]);
 
   const handleAdd = () => {
     const newEntry = { bayName, serialNumber, sku };
@@ -133,17 +148,27 @@ function Home() {
     setEditSku("");
   };
 
-  const handleClearAll = () => {
+  // ✅ Open modal instead of clearing immediately
+  const requestClearAll = () => {
+    if (bayList.length === 0 && completedList.length === 0) return;
+    setShowClearConfirm(true);
+  };
+
+  const confirmClearAll = () => {
     localStorage.removeItem("bayList");
     localStorage.removeItem("completedList");
     setBayList([]);
     setCompletedList([]);
+    setShowClearConfirm(false);
+  };
+
+  const cancelClearAll = () => {
+    setShowClearConfirm(false);
   };
 
   // ---------- CSV EXPORT ----------
   const escapeCSV = (value) => {
     const str = value == null ? "" : String(value);
-    // If field contains a comma, quote or newline, wrap in quotes and escape quotes
     if (/[",\n\r]/.test(str)) {
       return `"${str.replace(/"/g, '""')}"`;
     }
@@ -153,32 +178,23 @@ function Home() {
   const exportCompletedToCSV = () => {
     if (completedList.length === 0) return;
 
-    // Title for the CSV
     const title = "L11 Daily Test Report: Units sent to Packout";
-
-    // Column headers (numbered, exclude Bay)
     const headers = ["#", "Serial Number", "SKU"];
+    const pad = "   ";
 
-    // Add some padding to make Excel display columns wider
-    const pad = "   "; // three spaces of padding
-
-    // Generate rows with numbering starting at 1
     const rows = completedList.map((row, i) => [
       i + 1,
-      escapeCSV(row.serialNumber + pad),
-      escapeCSV(row.sku + pad),
+      escapeCSV((row.serialNumber ?? "") + pad),
+      escapeCSV((row.sku ?? "") + pad),
     ]);
 
-    // Combine title, header, and rows
     const csvLines = [
       title,
       headers.map((h) => escapeCSV(h + pad)).join(","),
       ...rows.map((r) => r.join(",")),
     ];
 
-    // Add BOM so Excel opens UTF-8 correctly
     const csvContent = "\uFEFF" + csvLines.join("\n");
-
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
 
@@ -187,7 +203,6 @@ function Home() {
     const mm = String(date.getMonth() + 1).padStart(2, "0");
     const dd = String(date.getDate()).padStart(2, "0");
 
-    // Create and trigger download
     const link = document.createElement("a");
     link.href = url;
     link.download = `L11-Packout-Report-${yyyy}-${mm}-${dd}.csv`;
@@ -197,6 +212,8 @@ function Home() {
     URL.revokeObjectURL(url);
   };
   // --------------------------------
+
+  const totalUnits = bayList.length + completedList.length;
 
   return (
     <div className="container">
@@ -222,7 +239,6 @@ function Home() {
           onChange={(e) => setSerialNumber(e.target.value)}
         />
 
-        {/* Dropdown above SKU input */}
         <select
           value=""
           onChange={(e) => setSku(e.target.value)}
@@ -399,7 +415,6 @@ function Home() {
             ))}
           </ol>
 
-          {/* CSV export button right after the list */}
           <div className="export-wrapper">
             <button className="export-btn" onClick={exportCompletedToCSV}>
               Download Completed as CSV
@@ -409,10 +424,38 @@ function Home() {
       )}
 
       <div className="clear-button-wrapper">
-        <button className="clear-btn" onClick={handleClearAll}>
+        <button className="clear-btn" onClick={requestClearAll}>
           Clear All Units
         </button>
       </div>
+
+      {/* ✅ Custom Confirm Modal (same style as Reports) */}
+      {showClearConfirm && (
+        <div
+          className="modal-backdrop"
+          onMouseDown={(e) => {
+            if (e.target.classList.contains("modal-backdrop")) cancelClearAll();
+          }}
+        >
+          <div className="modal-card" role="dialog" aria-modal="true">
+            <div className="modal-title">Clear all units?</div>
+            <div className="modal-text">
+              This will remove <strong>{totalUnits}</strong>{" "}
+              {totalUnits === 1 ? "unit" : "units"} from your lists (active and
+              completed). This cannot be undone.
+            </div>
+
+            <div className="modal-actions">
+              <button className="btn btn-secondary" onClick={cancelClearAll}>
+                Cancel
+              </button>
+              <button className="btn btn-danger" onClick={confirmClearAll}>
+                Yes, clear all
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -186,3 +186,69 @@
     width: 100%;
   }
 }
+/* ===========================
+   Custom Confirm Modal
+   =========================== */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 9999;
+}
+
+.modal-card {
+  width: min(520px, 100%);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 1);
+  border-radius: 16px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.25);
+  padding: 18px 18px 16px;
+  transform: translateY(0);
+  animation: modalPop 140ms ease-out;
+}
+
+@keyframes modalPop {
+  from {
+    transform: translateY(10px);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.modal-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #334155;
+  margin-bottom: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* If you don’t already have a danger button class */
+.btn-danger {
+  background: #dc2626;
+  color: white;
+  border: 1px solid #dc2626;
+}
+
+.btn-danger:hover {
+  filter: brightness(0.95);
+}
