@@ -7,7 +7,13 @@ function Reports() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const operatorOptions = ["ALEJANDRO", "JOHNNY", "KANTANGA", "RICHARD"];
+  const operatorOptions = [
+    "ALEJANDRO",
+    "JOHNNY",
+    "KANTANGA",
+    "RICHARD",
+    "NANGYAALAI",
+  ];
 
   const [operatorSelect, setOperatorSelect] = useState("");
   const [operatorCustom, setOperatorCustom] = useState("");
