@@ -13,6 +13,7 @@ function Reports() {
     "KANTANGA",
     "RICHARD",
     "NANGYAALAI",
+    "OSCAR",
   ];
 
   const [operatorSelect, setOperatorSelect] = useState("");
